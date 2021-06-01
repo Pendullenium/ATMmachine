@@ -1,86 +1,133 @@
-#‪C:\Users\stirl\Desktop\Gui.py
 import tkinter as tk
 
-numpad = tk.Frame()
-value=''
+main_window = tk.Tk()
 
-name = ''
-def on_change(e):
-  name = e.widget.get()
-  print(name)
-
-window = tk.Tk()
-
-def clicked(number):
-    global value
-    global mylabel
-    value = value + str(number)
-    print(value)
-    mylabel.destroy()
-    if len(value) > 21:
-        mylabel = tk.Label(master=numpad, text="Too Many Digits, Try Again", bg="blue", fg="yellow")
-        mylabel.grid(row=6, columnspan=len(value))
-        value = ''
-    else:
-        mylabel = tk.Label(master=numpad, text=value, bg="blue", fg="yellow")
-        if len(value) > 3:
-            mylabel.grid(row=6,columnspan=len(value))
-        else:
-            mylabel.grid(row=6, columnspan=3)
-
-instructions = tk.Label(text="Welcome to the ATM Machine\nWould you like to\n1. what1is\n2.what2is\n3.whats3is\n4.what4is", width= 40, height=10)
-instructions.grid(row=0, column=0)
+main_window.grid_rowconfigure(2, weight=1)
+main_window.grid_columnconfigure(0, weight=1)
 
 
-mylabel = tk.Label()
-mylabel.grid(row=6,columnspan=3)
+# ----------------------------------------------------------------------------------------------------------------------
+# Enter
+# ----------------------------------------------------------------------------------------------------------------------
 
-button1 = tk.Button(master=numpad, text="1",height=5,width=5, command=lambda: clicked(1))
-button1.grid(row=2,column=0)
-
-button2 = tk.Button(master=numpad, text="2",height=5,width=5, command=lambda: clicked(2))
-button2.grid(row=2,column=1)
-
-button3 = tk.Button(master=numpad, text="3",height=5,width=5, command=lambda: clicked(3))
-button3.grid(row=2,column=2)
-
-button4 = tk.Button(master=numpad, text="4",height=5,width=5, command=lambda: clicked(4))
-button4.grid(row=3,column=0)
-
-button5 = tk.Button(master=numpad, text="5",height=5,width=5, command=lambda: clicked(5))
-button5.grid(row=3,column=1)
-
-button6 = tk.Button(master=numpad, text="6",height=5,width=5, command=lambda: clicked(6))
-button6.grid(row=3,column=2)
-
-button7 = tk.Button(master=numpad, text="7",height=5,width=5, command=lambda: clicked(7))
-button7.grid(row=4,column=0)
-
-button8 = tk.Button(master=numpad, text="8",height=5,width=5, command=lambda: clicked(8))
-button8.grid(row=4,column=1)
-
-button9 = tk.Button(master=numpad, text="9",height=5,width=5, command=lambda: clicked(9))
-button9.grid(row=4,column=2)
-
-button0 = tk.Button(master=numpad, text="0", height=5, width=10, command=lambda: clicked(0))
-button0.grid(row=5,columnspan=2)
-
-buttonequals = tk.Button(master=numpad, text='=',height=5,width=5)
-buttonequals.grid(row=5,column=2)
+def enter():
+    return True
 
 
-e = tk.Entry(master=numpad, width=20)
-e.grid(row=0,columnspan=3)
-e.bind("<Return>", on_change)
-numpad.grid(column=0,row=1)
+# ----------------------------------------------------------------------------------------------------------------------
+# Number
+# ----------------------------------------------------------------------------------------------------------------------
+
+def addnum(n, pword):
+    if len(pword.get()) < 4:
+        pword.set(pword.get() + str(n))
+
+
+def revnum(pword):
+    pword.set(pword.get()[0:-1])
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Main Frame /// Screen
+# ----------------------------------------------------------------------------------------------------------------------
+
+frame_1 = tk.Frame(
+    master=main_window,
+    background="black",
+    height="40",
+    width="80"
+)
+label_1 = tk.Label(
+    master=frame_1,
+    text="Lorem ipsum \ndolor sit amet, \nconsectetur adipiscing\n elit."
+)
+label_1.pack()
+
+# Password field/Entry
+pword = tk.StringVar()
+pentry = tk.Entry(
+    frame_1,
+    textvariable=pword
+)
+pentry.pack()
+
+frame_1.grid(row=0, column=1, sticky="news")
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Bottom Frame /// Numpad
+# ----------------------------------------------------------------------------------------------------------------------
+
+bottom_frame = tk.Frame(
+    master=main_window,
+    borderwidth=2,
+    relief="raised"
+)
+bottom_frame.grid(row=1, column=1, sticky="news", padx=10, pady=10)
+
+main_window.columnconfigure(1, weight=1, minsize=75)
+main_window.rowconfigure(1, weight=1, minsize=50)
+
+# Generate buttons for 1-9
+num = 1
+for i in range(3):
+    bottom_frame.columnconfigure(i, weight=1, minsize=75)
+    bottom_frame.rowconfigure(i, weight=1, minsize=50)
+    for j in range(3):
+        button = tk.Button(
+            master=bottom_frame,
+            text=num,
+            height="2",
+            width="4",
+            command=lambda x=num: addnum(x, pword)
+        )
+        button.grid(row=i, column=j, sticky="news")
+        num += 1
+
+# Generate button 0
+button = tk.Button(
+    master=bottom_frame,
+    text=0,
+    height="2",
+    command=lambda x=0, y=pword: addnum(x, y)
+)
+button.grid(row=3, column=0, columnspan=3, sticky="news")
+
+# Generate Enter button
+bottom_frame.columnconfigure(3, weight=1, minsize=75)
+bottom_frame.rowconfigure(2, weight=1, minsize=50)
+button = tk.Button(
+    master=bottom_frame,
+    text="Enter",
+    command=enter()
+)
+button.grid(row=2, column=3, rowspan=2)
+
+# Generate Cancel button
+bottom_frame.columnconfigure(3, weight=1, minsize=75)
+bottom_frame.rowconfigure(2, weight=1, minsize=50)
+button = tk.Button(
+    master=bottom_frame,
+    text="Cancel",
+    command=lambda: revnum(pword)
+)
+button.grid(row=1, column=3)
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Right Frame
+# ----------------------------------------------------------------------------------------------------------------------
 
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Left Frame
+# ----------------------------------------------------------------------------------------------------------------------
+
+left_frame = tk.Frame(
+    master=main_window,
+    borderwidth=2,
+    relief="raised"
+)
+left_frame.grid(row=1, column=1, sticky="news", padx=10, pady=10)
 
 
-
-
-
-window.mainloop()
-
-#pack_forget
+main_window.mainloop()
