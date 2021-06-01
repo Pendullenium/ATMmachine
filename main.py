@@ -76,18 +76,17 @@ for i in range(3):
         button = tk.Button(
             master=bottom_frame,
             text=num,
-            height="2",
-            width="4",
             command=lambda x=num: addnum(x, pword)
         )
         button.grid(row=i, column=j, sticky="news")
         num += 1
 
 # Generate button 0
+bottom_frame.columnconfigure(0, weight=1, minsize=75)
+bottom_frame.rowconfigure(3, weight=1, minsize=50)
 button = tk.Button(
     master=bottom_frame,
     text=0,
-    height="2",
     command=lambda x=0, y=pword: addnum(x, y)
 )
 button.grid(row=3, column=0, columnspan=3, sticky="news")
@@ -113,12 +112,50 @@ button = tk.Button(
 button.grid(row=1, column=3)
 
 # ----------------------------------------------------------------------------------------------------------------------
+# Left Frame
+# ----------------------------------------------------------------------------------------------------------------------
+
+left_frame = tk.Frame(
+    background="blue"
+)
+left_frame.grid(row=0, column=0)
+main_window.columnconfigure(0, weight=1)
+main_window.rowconfigure(0, weight=1)
+
+for i in range(3):
+    left_frame.columnconfigure(i, weight=1)
+    left_frame.rowconfigure(i, weight=1)
+
+lbtn_1 = tk.Button(
+    left_frame,
+    text=">>"
+)
+lbtn_1.grid(row=0, column=0, sticky="news")
+
+lbtn_2 = tk.Button(
+    left_frame,
+    text=">>"
+)
+lbtn_2.grid(row=1, column=0, sticky="news")
+
+lbtn_3 = tk.Button(
+    left_frame,
+    text=">>"
+)
+lbtn_3.grid(row=2, column=0, sticky="news")
+
+# ----------------------------------------------------------------------------------------------------------------------
 # Right Frame
 # ----------------------------------------------------------------------------------------------------------------------
 
+right_frame = tk.Frame(
+    background="blue"
+)
+right_frame.grid(row=0, column=2)
+main_window.columnconfigure(2, weight=1, minsize=75)
+main_window.rowconfigure(0, weight=1, minsize=50)
 
-# ----------------------------------------------------------------------------------------------------------------------
-# Bottom Frame
-# ----------------------------------------------------------------------------------------------------------------------
+
+
 
 main_window.mainloop()
